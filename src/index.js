@@ -23,6 +23,10 @@ class Conf {
     this.fileStorage.add(...args);
   }
 
+  setEnvPrefix(str) {
+    this.envStorage.setPrefix(str);
+  }
+
   get(key) {
     let res;
     for (let i = 0, len = this.precedence.length; i < len; i++) {
