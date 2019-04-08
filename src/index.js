@@ -1,12 +1,14 @@
 const DefaultStorage = require('./storage/default');
 const EnvStorage = require('./storage/env');
+const FileStorage = require('./storage/file');
 const { getType } = require('./utils');
 
 class Conf {
   constructor() {
     this.defaultStorage = new DefaultStorage();
     this.envStorage = new EnvStorage();
-    this.precedence = ['env', 'default'];
+    this.fileStorage = new FileStorage();
+    this.precedence = ['env', 'file', 'default'];
   }
 
   default(...args) {
@@ -17,13 +19,17 @@ class Conf {
     this.envStorage.bind(...args);
   }
 
+  file(...args) {
+    this.fileStorage.add(...args);
+  }
+
   get(key) {
     let res;
     for (let i = 0, len = this.precedence.length; i < len; i++) {
       const storageKey = this.precedence[i];
       res = this[`${storageKey}Storage`].get(key);
       const type = getType(res);
-      if (type !== 'undefined' && type !== 'null') {
+      if (type !== 'undefined') {
         return res;
       }
     }
