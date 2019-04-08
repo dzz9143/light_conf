@@ -25,10 +25,7 @@ function getValue(obj, key) {
     const p = arr[i];
     const isDone = (i === len - 1);
     const type = getType(o);
-    if (!isDone && type !== 'object' && type !== 'array') {
-      // throw new Error(`invalid key: ${key}`);
-      // instead of throwing error, just return undefined and print a warning
-      // console.warn()
+    if (type !== 'object' && type !== 'array') {
       return undefined;
     }
 
@@ -65,6 +62,7 @@ function getType(obj) {
     case '[object Undefined]':
       return 'undefined';
     default:
+      console.log('typeString:', typeString);
       throw new Error('unknown type');
   }
 }
