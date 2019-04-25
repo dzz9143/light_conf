@@ -63,4 +63,7 @@ conf.get('secret')
 const path = require('path');
 conf.file(path.resolve(__dirname, 'conf.json'));
 conf.file(path.resolve(__dirname, 'conf.yaml'));
+
+// 你也可以将文件内容指定到一个特定的变量上
+conf.file('myproject', path.resolve(__dirname, 'myproject.conf.json'));
 ```
