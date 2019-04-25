@@ -1,3 +1,4 @@
+const { getArgs } = require('../utils');
 const BaseStorage = require('./base');
 const fs = require('fs');
 const path = require('path');
@@ -19,7 +20,7 @@ function readYamlSync(filePath) {
 
 // support yaml and json
 class FileStorage extends BaseStorage {
-  add(filePath) {
+  _getFileContent(filePath) {
     const ext = path.extname(filePath);
     let fileConfig;
     switch (ext) {
@@ -32,10 +33,25 @@ class FileStorage extends BaseStorage {
       default:
         throw new Error(`*${ext} is not supported`);
     }
-    this.storage = {
-      ...this.storage,
-      ...fileConfig,
-    };
+    return fileConfig;
+  }
+
+  add() {
+    const args = getArgs(arguments);
+    if (args.length === 1) {
+      const config = this._getFileContent(args[0]);
+      this.storage = {
+        ...this.storage,
+        ...config,
+      };
+    } else if (args.length === 2) {
+      const [key, filePath] = args;
+      const config = this._getFileContent(filePath);
+      this.storage = {
+        ...this.storage,
+        [key]: config,
+      };
+    }
   }
 }
 

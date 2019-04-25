@@ -17,4 +17,12 @@ describe('FileStorage should', () => {
     expect(file.get('app.secret')).toEqual('123456');
     expect(file.get('db.uri')).toEqual('mongodb://localhost:27017');
   });
+
+  test('be able to read from file and attach to a specific variable', () => {
+    const file = new FileStorage();
+    file.add('abc', path.resolve(__dirname, 'testConfig.json'));
+    expect(file.get('abc.app.id')).toEqual('apptest');
+    expect(file.get('abc.app.secret')).toEqual('123456');
+    expect(file.get('abc.db.uri')).toEqual('mongodb://localhost:27017');
+  });
 });
